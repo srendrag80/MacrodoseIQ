@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#090d16"/>
+  <rect x="24" y="24" width="464" height="464" rx="92" fill="#0f172a" stroke="#f59e0b" stroke-width="8" stroke-opacity="0.55"/>
+  <circle cx="256" cy="256" r="172" fill="none" stroke="#34d399" stroke-width="4" stroke-opacity="0.25" stroke-dasharray="12 10"/>
+  <text x="256" y="305" font-family="-apple-system, BlinkMacSystemFont, Inter, sans-serif" font-size="160" font-weight="800" fill="#fbbf24" text-anchor="middle" letter-spacing="-6">MQ</text>
+</svg>

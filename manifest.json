@@ -1,0 +1,49 @@
+{
+  "id": "./index.html",
+  "name": "MacrodoseIQ \u2014 Journey Harm-Reduction, Sitter & Integration Companion",
+  "short_name": "MacrodoseIQ",
+  "description": "100% free, zero-knowledge encrypted full-journey harm-reduction companion: weight & dose-tier calculator, colorimetric reagent lab, sober sitter dashboard, breathing & sound sanctuary, and 30-day integration journal. Built by Flude.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#090d16",
+  "theme_color": "#090d16",
+  "categories": [
+    "health",
+    "lifestyle",
+    "education"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-192.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

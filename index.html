@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#090d16">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MacrodoseIQ">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>MacrodoseIQ — Journey Harm-Reduction, Sitter &amp; Integration Companion</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#090d16',
+            slatecard: '#111827',
+            slateborder: '#1f2937',
+            sage: '#34d399',
+            amberaccent: '#f59e0b'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+    body {
+      background-color: #090d16;
+      color: #f3f4f6;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    input[type=range] { accent-color: #f59e0b; }
+    .breath-ring-transition {
+      transition: transform 0.95s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.95s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-amber-500/20 selection:text-amber-300">
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center space-y-2 pointer-events-none w-full max-w-sm px-4"></div>
+
+  <!-- PINNED TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-slate-950/95 backdrop-blur-md border-b border-slate-800/80 px-3 sm:px-5 py-2.5">
+    <div class="max-w-3xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-9 h-9 rounded-xl bg-amber-950/90 border border-amber-500/50 flex items-center justify-center text-amber-400 font-extrabold text-sm tracking-tight shadow-inner shrink-0">
+          MQ
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <h1 class="text-sm sm:text-base font-bold tracking-tight text-white leading-tight">MacrodoseIQ</h1>
+            <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-950/90 text-amber-300 border border-amber-500/30 font-mono font-semibold">v1.0 Clean-Slate</span>
+            <span class="hidden sm:inline-block text-[10px] px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 font-mono">100% Free · Offline</span>
+          </div>
+          <p class="text-[10px] text-slate-400 font-medium">Full-Journey Harm Reduction, Sitter &amp; Integration · by Flude</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-1.5 shrink-0">
+        <button id="btn-header-vault" type="button" class="px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1 transition" title="Encrypted Local Vault">
+          <span>🔒</span>
+          <span class="hidden sm:inline text-[11px]">Vault</span>
+        </button>
+
+        <button id="btn-open-share" type="button" class="px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white text-xs font-medium flex items-center gap-1 transition" title="Share Offline via QR">
+          <span>📱</span>
+          <span class="hidden sm:inline text-[11px]">Share</span>
+        </button>
+
+        <button id="btn-open-sos" type="button" class="px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-500/60 text-amber-300 hover:bg-amber-500/30 text-xs font-bold flex items-center gap-1.5 transition shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+          <span>Rough Time / SOS</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PRIMARY NAVIGATION TABS -->
+  <nav class="bg-slate-900/80 border-b border-slate-800/80 px-2 sm:px-4 py-1.5 sticky top-[57px] z-30 backdrop-blur">
+    <div class="max-w-3xl mx-auto flex items-center space-x-1 overflow-x-auto no-scrollbar text-xs">
+      <button type="button" class="tab-btn px-3 py-1.5 rounded-lg font-semibold text-amber-400 bg-slate-800/90 whitespace-nowrap transition flex items-center gap-1.5" data-tab="tab-tiers">
+        <span>⚖️</span><span>1. Weight &amp; Dose Tiers</span>
+      </button>
+      <button type="button" class="tab-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 whitespace-nowrap transition flex items-center gap-1.5" data-tab="tab-reagents">
+        <span>🧪</span><span>2. Reagent &amp; Strip Lab</span>
+      </button>
+      <button type="button" class="tab-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 whitespace-nowrap transition flex items-center gap-1.5" data-tab="tab-meds">
+        <span>🛡️</span><span>3. Meds &amp; Pre-Flight</span>
+      </button>
+      <button type="button" class="tab-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 whitespace-nowrap transition flex items-center gap-1.5" data-tab="tab-sitter">
+        <span>🧭</span><span>4. Sitter &amp; Phase Clock</span>
+      </button>
+      <button type="button" class="tab-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 whitespace-nowrap transition flex items-center gap-1.5" data-tab="tab-grounding">
+        <span>🫁</span><span>5. Breathe &amp; Sounds</span>
+      </button>
+      <button type="button" class="tab-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 whitespace-nowrap transition flex items-center gap-1.5" data-tab="tab-integration">
+        <span>📓</span><span>6. 30-Day Integration</span>
+      </button>
+      <button type="button" class="tab-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 whitespace-nowrap transition flex items-center gap-1.5" data-tab="tab-maps">
+        <span>🏛️</span><span>7. MAPS &amp; Vault</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-3xl w-full mx-auto p-3 sm:p-5 space-y-5">
+
+    <!-- ========================================================== -->
+    <!-- MODULE 1: WEIGHT & DOSE-TIER REFERENCE ENGINE              -->
+    <!-- ========================================================== -->
+    <section id="tab-tiers" class="tab-content space-y-4">
+      <div id="macro-critical-banner" class="hidden bg-red-950/85 border-2 border-red-500 rounded-xl p-4 space-y-1.5 shadow-lg">
+        <div class="flex items-center justify-between">
+          <span class="text-xs sm:text-sm font-extrabold text-red-300 uppercase">⛔ Critical Medication Contraindication Active</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-red-900 text-red-200">High-Risk Combination</span>
+        </div>
+        <p id="macro-critical-text" class="text-xs text-red-100 leading-relaxed"></p>
+      </div>
+
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">Module 1 · Pre-Flight Dosage Reference</span>
+          <h2 class="text-base sm:text-lg font-bold text-white">Weight &amp; Full-Journey Dose-Tier Reference</h2>
+          <p class="text-xs text-slate-400">Descriptive reference ranges sourced from clinical research (Johns Hopkins, MAPS, Erowid, Shulgin) calibrated for your body weight and medication check.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label for="macro-weight" class="font-semibold text-slate-300">1. Body Weight</label>
+              <div class="inline-flex rounded bg-slate-900 border border-slate-800 p-0.5 text-[10px]">
+                <button type="button" id="macro-btn-lbs" class="px-2 py-0.5 rounded bg-amber-600 text-white font-bold">lbs</button>
+                <button type="button" id="macro-btn-kg" class="px-2 py-0.5 rounded text-slate-400">kg</button>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="macro-weight" type="number" min="60" max="500" value="175" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-base font-bold text-white font-mono">
+              <span id="macro-weight-label" class="text-xs font-mono text-slate-400 shrink-0">lbs (79.4 kg)</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1.5">
+            <label for="macro-substance" class="font-semibold text-amber-400 block">2. Select Substance</label>
+            <select id="macro-substance" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white font-semibold">
+              <option value="psilo_dried">Psilocybe cubensis (Dried Mushrooms)</option>
+              <option value="psilo_pe">Penis Envy / Potent Strains (1.5x–2x Caveat)</option>
+              <option value="lsd_25">LSD-25 (Blotter / Gel Tab / Liquid)</option>
+              <option value="prodrug_lsd">1P-LSD / 1V-LSD (Lysergamide Prodrugs)</option>
+              <option value="mdma">MDMA (Crystal / Tested Press · Weight-Scaled)</option>
+              <option value="phen_2cb">2C-B (Oral Phenethylamine · Steep Curve)</option>
+              <option value="mescaline">Mescaline HCl (San Pedro / Bridgesii)</option>
+              <option value="ketamine">Ketamine (Intranasal / Sublingual Reference)</option>
+              <option value="dmt_vaped">N,N-DMT (Vaporized Freebase)</option>
+              <option value="ayahuasca">Oral Ayahuasca / Pharmahuasca (MAOI Gate)</option>
+              <option value="dmt_5meo">5-MeO-DMT (Vaporized · Fatal MAOI Lockout)</option>
+            </select>
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1.5">
+            <label for="macro-quick-med" class="font-semibold text-slate-300 block">3. Medication Check</label>
+            <select id="macro-quick-med" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-white">
+              <option value="none">No interacting medications</option>
+              <option value="lithium">⛔ Lithium (Grand Mal Seizure Risk)</option>
+              <option value="tramadol">⛔ Tramadol (Convulsion / Serotonin Risk)</option>
+              <option value="maoi">⛔ MAOIs / RIMAs (Fatal with MDMA/2C-B/5-MeO)</option>
+              <option value="dxm">⛔ DXM Cough Meds (Serotonin Toxicity)</option>
+              <option value="alcohol_ket">⛔ Alcohol / Opioids (Fatal with Ketamine)</option>
+              <option value="ssri">📉 SSRIs / SNRIs (Blunting + Serotonin Risk on MDMA)</option>
+              <option value="lamictal">⚠️ Lamictal / Lamotrigine (No Lithium Seizure Risk)</option>
+              <option value="stimulant">⚠️ ADHD Stimulants (Cardiovascular Strain)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 5-Tier Experiential Reference Breakdown -->
+        <div class="bg-slate-950 border border-amber-500/40 rounded-2xl p-4 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-800 pb-2.5">
+            <div>
+              <span id="macro-sub-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500/30">Classical Tryptamine</span>
+              <h3 id="macro-sub-title" class="text-sm sm:text-base font-bold text-white mt-1">Psilocybe cubensis (Dried Mushrooms)</h3>
+            </div>
+            <span id="macro-sub-kinetics" class="text-xs font-mono text-slate-300">Onset: 20–45m · Peak: 90–180m · Total: 4–6h</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-2.5">
+              <span class="text-[10px] text-slate-400 block">1. Threshold</span>
+              <span id="tier-1" class="text-xs sm:text-sm font-bold text-slate-200 font-mono">0.25–0.5 g</span>
+            </div>
+            <div class="bg-slate-900 border border-sky-500/30 rounded-xl p-2.5">
+              <span class="text-[10px] text-sky-300 block">2. Light / Museum</span>
+              <span id="tier-2" class="text-xs sm:text-sm font-bold text-sky-300 font-mono">0.75–1.25 g</span>
+            </div>
+            <div class="bg-amber-950/40 border border-amber-500/50 rounded-xl p-2.5">
+              <span class="text-[10px] text-amber-300 font-semibold block">3. Common / Full</span>
+              <span id="tier-3" class="text-xs sm:text-sm font-extrabold text-amber-400 font-mono">1.5–2.5 g</span>
+            </div>
+            <div class="bg-slate-900 border border-purple-500/40 rounded-xl p-2.5">
+              <span class="text-[10px] text-purple-300 block">4. Strong / Deep</span>
+              <span id="tier-4" class="text-xs sm:text-sm font-bold text-purple-300 font-mono">2.75–3.5 g</span>
+            </div>
+            <div class="col-span-2 sm:col-span-1 bg-slate-900 border border-red-500/40 rounded-xl p-2.5">
+              <span class="text-[10px] text-red-300 block">5. Heavy / Ego Loss</span>
+              <span id="tier-5" class="text-xs sm:text-sm font-bold text-red-300 font-mono">4.0–5.0 g+</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 space-y-1.5 text-xs">
+            <p id="macro-weight-guidance" class="text-[11px] text-slate-200 leading-relaxed"></p>
+            <p id="macro-safety-guidance" class="text-[11px] text-amber-300/90 leading-relaxed pt-1 border-t border-slate-800"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODULE 2: REAGENT COLORIMETRIC LAB & FENTANYL STRIP GUIDE  -->
+    <!-- ========================================================== -->
+    <section id="tab-reagents" class="tab-content hidden space-y-4">
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl text-xs">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">Module 2 · Chemical Verification</span>
+          <h2 class="text-base sm:text-lg font-bold text-white">Interactive Reagent Colorimetric Lab &amp; Fentanyl Strip Calculator</h2>
+          <p class="text-xs text-slate-400">Never trust a blotter print, pill stamp, or bag label. Verify what you have before ingestion.</p>
+        </div>
+
+        <div>
+          <label for="reagent-compound-select" class="block font-semibold text-slate-300 mb-1.5">Select Sample to View Expected Reagent Reactions:</label>
+          <select id="reagent-compound-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white font-semibold">
+            <option value="lsd">LSD-25 / 1P-LSD (vs. Lethal 25I-NBOMe)</option>
+            <option value="mdma">MDMA / Molly (vs. Methamphetamine / Bath Salts)</option>
+            <option value="2cb">2C-B (Phenethylamine)</option>
+            <option value="ketamine">Ketamine HCl (vs. Novel Dissociatives)</option>
+            <option value="dmt">N,N-DMT / Psilocybin Indoles</option>
+          </select>
+        </div>
+
+        <div id="reagent-swatches-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+
+        <!-- Fentanyl Test Strip Water Dilution Calculator -->
+        <div class="bg-slate-950 border border-amber-500/30 rounded-xl p-4 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-amber-300 text-sm">🎗️ Fentanyl Test Strip Dilution Calculator (DanceSafe Standard)</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-300">Prevent False Positives</span>
+          </div>
+          <p class="text-[11px] text-slate-300 leading-relaxed">
+            <strong>Why dilution matters:</strong> MDMA and methamphetamine cause false positives on fentanyl strips if the water is too concentrated. Follow these exact ratios:
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="bg-slate-900 border border-slate-800 rounded-lg p-3">
+              <span class="font-bold text-white block">MDMA, 2C-B, or Amphetamines</span>
+              <span class="text-emerald-400 font-mono font-bold text-xs">10 mg powder in 5 mL water (1 tsp)</span>
+              <p class="text-[10px] text-slate-400 mt-1">Dip up to wavy line for 15s, lay flat for 3 mins. <strong>2 red lines = Negative</strong> (even if one line is very faint). <strong>1 red line = DANGER (Positive for Fentanyl)</strong>.</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-lg p-3">
+              <span class="font-bold text-white block">Ketamine, Cocaine, or Tuci</span>
+              <span class="text-sky-400 font-mono font-bold text-xs">10 mg powder in 1 mL water</span>
+              <p class="text-[10px] text-slate-400 mt-1">After testing, you can still consume or evaporate the clean water solution so zero material is wasted.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODULE 3: MEDICATION SCREENER & PRE-FLIGHT CHECKLIST       -->
+    <!-- ========================================================== -->
+    <section id="tab-meds" class="tab-content hidden space-y-4">
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl text-xs">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">Module 3 · Pre-Flight Safety &amp; Set/Setting</span>
+          <h2 class="text-base sm:text-lg font-bold text-white">Pre-Journey Readiness &amp; Contraindication Check</h2>
+          <p class="text-xs text-slate-400">Verify physical, psychiatric, and environmental safety before beginning a macrodose session.</p>
+        </div>
+
+        <!-- Interactive Pre-Flight Checklist -->
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-emerald-400">✅ Pre-Flight Set &amp; Setting Checklist</span>
+            <span id="preflight-score" class="text-[11px] font-mono text-slate-300">0 / 6 Checked</span>
+          </div>
+          <div class="space-y-2">
+            <label class="flex items-start gap-2.5 cursor-pointer p-2 rounded-lg bg-slate-900/80 border border-slate-800">
+              <input type="checkbox" class="preflight-chk mt-0.5 accent-emerald-500">
+              <span class="text-slate-200"><strong>Reagent &amp; Strip Verified:</strong> Tested batch with Ehrlich/Marquis/Morris reagents and fentanyl strips.</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer p-2 rounded-lg bg-slate-900/80 border border-slate-800">
+              <input type="checkbox" class="preflight-chk mt-0.5 accent-emerald-500">
+              <span class="text-slate-200"><strong>Medication Exclusion Verified:</strong> Confirmed zero Lithium, Tramadol, MAOIs, DXM, or conflicting prescriptions.</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer p-2 rounded-lg bg-slate-900/80 border border-slate-800">
+              <input type="checkbox" class="preflight-chk mt-0.5 accent-emerald-500">
+              <span class="text-slate-200"><strong>Clear 12–24 Hour Window:</strong> No driving, work duties, or high-stress obligations until after a full night's sleep.</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer p-2 rounded-lg bg-slate-900/80 border border-slate-800">
+              <input type="checkbox" class="preflight-chk mt-0.5 accent-emerald-500">
+              <span class="text-slate-200"><strong>Trusted Sitter or Safe Container:</strong> Sober friend aware of boundaries, or Fireside/988 pinned and phone on Do Not Disturb.</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer p-2 rounded-lg bg-slate-900/80 border border-slate-800">
+              <input type="checkbox" class="preflight-chk mt-0.5 accent-emerald-500">
+              <span class="text-slate-200"><strong>Hydration &amp; Temperature Staged:</strong> Water/electrolytes, warm blanket, calm lighting, and light fruit ready.</span>
+            </label>
+            <label class="flex items-start gap-2.5 cursor-pointer p-2 rounded-lg bg-slate-900/80 border border-slate-800">
+              <input type="checkbox" class="preflight-chk mt-0.5 accent-emerald-500">
+              <span class="text-slate-200"><strong>Intention &amp; Surrender Anchor:</strong> Prepared to trust, breathe, and float downstream rather than fight challenging waves.</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- High-Priority Macrodose Contraindication Matrix -->
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2.5">
+          <span class="font-bold text-white block">🛡️ High-Stakes Full-Dose Contraindication Reference</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="p-3 rounded-lg bg-red-950/35 border border-red-700 space-y-1">
+              <span class="font-bold text-red-300 block">⛔ Lithium + Classic Psychedelics</span>
+              <p class="text-[11px] text-slate-200">Extreme risk of grand mal seizures and acute fugue states. (Note: Lamictal/Lamotrigine does NOT share this seizure risk).</p>
+            </div>
+            <div class="p-3 rounded-lg bg-red-950/35 border border-red-700 space-y-1">
+              <span class="font-bold text-red-300 block">⛔ MAOIs / Ayahuasca + MDMA / SSRIs / 5-MeO</span>
+              <p class="text-[11px] text-slate-200">Blocks monoamine breakdown; triggers fatal serotonin syndrome and malignant hyperthermia.</p>
+            </div>
+            <div class="p-3 rounded-lg bg-red-950/35 border border-red-700 space-y-1">
+              <span class="font-bold text-red-300 block">⛔ Ketamine + Alcohol / Opioids / GHB</span>
+              <p class="text-[11px] text-slate-200">Dual CNS depression causes profound ataxia, blackout, and lethal aspiration from vomiting while unconscious.</p>
+            </div>
+            <div class="p-3 rounded-lg bg-amber-950/30 border border-amber-700 space-y-1">
+              <span class="font-bold text-amber-300 block">⚠️ Tramadol &amp; DXM Cough Meds</span>
+              <p class="text-[11px] text-slate-200">Lower seizure threshold and inhibit serotonin reuptake; strictly contraindicated with psychedelics and entactogens.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODULE 4: SOBER SITTER MODE & LIVE JOURNEY PHASE CLOCK     -->
+    <!-- ========================================================== -->
+    <section id="tab-sitter" class="tab-content hidden space-y-4">
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl text-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">Module 4 · Low-Stimulation In-Session Companion</span>
+            <h2 class="text-base sm:text-lg font-bold text-white">Journey Phase Tracker &amp; Sober Sitter Dashboard</h2>
+            <p class="text-xs text-slate-400">Start the phase clock at ingestion so you or your sitter always know where you are in the natural arc of the experience.</p>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" id="btn-start-journey" class="px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold transition">
+              ⏱️ Start Journey Now
+            </button>
+            <button type="button" id="btn-clear-journey" class="px-2.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 hover:text-white transition">
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Journey Phase Arc -->
+        <div class="bg-slate-950 border border-amber-500/40 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-[10px] font-mono uppercase text-slate-400 block">Current Journey Phase</span>
+              <span id="journey-phase-title" class="text-base sm:text-lg font-extrabold text-amber-400">Not Started (Tap Start Journey at Ingestion)</span>
+            </div>
+            <span id="journey-elapsed-badge" class="text-sm font-mono font-bold px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-white">T+ 0h 00m</span>
+          </div>
+          <p id="journey-phase-desc" class="text-xs text-slate-300 leading-relaxed">
+            When started, this clock gently tracks your progression through Ingestion &rarr; Come-Up &rarr; Peak Plateau &rarr; Gentle Return &rarr; Afterglow without stressful countdown alarms.
+          </p>
+          <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] font-mono">
+            <div id="phase-box-1" class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">1. Come-Up (0–90m)</div>
+            <div id="phase-box-2" class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">2. Peak (1.5–4h)</div>
+            <div id="phase-box-3" class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">3. Return (4–6h+)</div>
+            <div id="phase-box-4" class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">4. Afterglow</div>
+          </div>
+        </div>
+
+        <!-- Zendo Project 4 Golden Sitter Rules -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-1">
+            <span class="font-bold text-emerald-400">1. Create a Safe Container</span>
+            <p class="text-[11px] text-slate-300">Dim harsh lights, lower room temperature if warm, silence phones, and never crowd or hover over the journeyer.</p>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-1">
+            <span class="font-bold text-emerald-400">2. Sitting, Not Guiding</span>
+            <p class="text-[11px] text-slate-300">Don't steer their thoughts or analyze what they see. Speak slowly, validate feelings ("You are safe, take your time"), and ask before any physical touch.</p>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-1">
+            <span class="font-bold text-emerald-400">3. Talk Through, Not Down</span>
+            <p class="text-[11px] text-slate-300">Remind them: <em>"If you see a closed door, open it; if you feel a wave, breathe and float with it."</em> Fighting the current creates panic.</p>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-1">
+            <span class="font-bold text-amber-300">4. Change the Sensory Channel</span>
+            <p class="text-[11px] text-slate-300">If stuck in a thought loop, gently change one thing: move to the floor ("Flude grounding"), sip cool water, put on a warm blanket, or switch to soft rain audio.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODULE 5: BREATHING CIRCLE & OFFLINE SOUND SANCTUARY       -->
+    <!-- ========================================================== -->
+    <section id="tab-grounding" class="tab-content hidden space-y-4">
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-5 shadow-xl text-xs">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">Module 5 · Somatic &amp; Acoustic Sanctuary</span>
+          <h2 class="text-base sm:text-lg font-bold text-white">Breathing Exercise Circle, Rhythmic Chants, Rain &amp; Brown Noise</h2>
+          <p class="text-xs text-slate-400">100% offline Web Audio synthesis and visual breath pacing designed for altered states of mind.</p>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 flex flex-col items-center text-center space-y-4">
+          <div class="flex flex-wrap justify-center gap-2">
+            <button type="button" class="breath-mode-btn px-3 py-1.5 rounded-lg bg-amber-600 text-white font-semibold" data-mode="sigh">Physiological Sigh</button>
+            <button type="button" class="breath-mode-btn px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300" data-mode="478">4-7-8 Deep Calm</button>
+            <button type="button" class="breath-mode-btn px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300" data-mode="box">Box Breathing (4-4-4-4)</button>
+          </div>
+
+          <div class="relative w-52 h-52 flex items-center justify-center my-2">
+            <div id="main-breath-outer" class="absolute inset-0 rounded-full bg-amber-500/10 border-2 border-amber-400/30 breath-ring-transition scale-90"></div>
+            <div id="main-breath-mid" class="absolute inset-5 rounded-full bg-emerald-500/15 border border-emerald-400/40 breath-ring-transition scale-90"></div>
+            <div class="relative w-32 h-32 rounded-full bg-slate-900 border-2 border-amber-400/60 flex flex-col items-center justify-center p-3 z-10 shadow-2xl">
+              <span id="main-breath-phase" class="text-sm font-extrabold text-amber-300">Inhale Nose</span>
+              <span id="main-breath-timer" class="text-xl font-mono font-bold text-white mt-0.5">3s</span>
+              <span id="main-breath-sub" class="text-[10px] text-slate-400 mt-0.5">Deep belly breath</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-white">🎧 Offline Generative Sound Sanctuary</span>
+            <span id="audio-state-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">Muted · Opt-In</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            <button type="button" class="sound-btn p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 font-semibold flex flex-col items-center gap-1" data-sound="chants">
+              <span class="text-lg">🕯️</span><span>Rhythmic Chants</span>
+            </button>
+            <button type="button" class="sound-btn p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 font-semibold flex flex-col items-center gap-1" data-sound="rain">
+              <span class="text-lg">🌧️</span><span>Soft Rain</span>
+            </button>
+            <button type="button" class="sound-btn p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 font-semibold flex flex-col items-center gap-1" data-sound="brown">
+              <span class="text-lg">🌊</span><span>Brown Noise</span>
+            </button>
+            <button type="button" class="sound-btn p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 font-semibold flex flex-col items-center gap-1" data-sound="bowl">
+              <span class="text-lg">🔔</span><span>432 Hz Bowl</span>
+            </button>
+            <button type="button" class="sound-btn col-span-2 sm:col-span-1 p-3 rounded-xl bg-amber-950/60 border border-amber-500/40 text-amber-300 font-semibold flex flex-col items-center justify-center gap-1" data-sound="off">
+              <span class="text-lg">🔇</span><span>Silence</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODULE 6: 30-DAY SPACED INTEGRATION JOURNAL                -->
+    <!-- ========================================================== -->
+    <section id="tab-integration" class="tab-content hidden space-y-4">
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl text-xs">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">Module 6 · Post-Journey Integration</span>
+          <h2 class="text-base sm:text-lg font-bold text-white">30-Day Spaced Integration Journal</h2>
+          <p class="text-xs text-slate-400">The journey opens the window; integration translates the insight into your real daily life.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="int-milestone" class="block text-slate-400 font-medium mb-1">Integration Milestone</label>
+            <select id="int-milestone" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-semibold">
+              <option value="Day 1 — Somatic Rest & Landing">Day 1 — Somatic Rest, Sleep &amp; Gentle Landing</option>
+              <option value="Day 3 — Emotional & Symbol Unpacking">Day 3 — Emotional Breakthroughs &amp; Key Symbols</option>
+              <option value="Day 7 — Behavioral Translation">Day 7 — One Concrete Habit or Boundary Shift</option>
+              <option value="Day 14 — Two-Week Check-In">Day 14 — Relationship &amp; Perspective Check-In</option>
+              <option value="Day 30 — One-Month Anchor">Day 30 — Long-Term Integration &amp; Gratitude</option>
+            </select>
+          </div>
+          <div>
+            <label for="int-substance" class="block text-slate-400 font-medium mb-1">Substance &amp; Dose Explored</label>
+            <input id="int-substance" type="text" placeholder="e.g. 2.0g Dried Cubensis or 100 µg LSD" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+        </div>
+
+        <div>
+          <label for="int-notes" class="block text-slate-400 font-medium mb-1">Integration Reflection (Stored Encrypted on Your Device)</label>
+          <textarea id="int-notes" rows="3" placeholder="What did the experience show you? What single small action honors that insight this week?" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white"></textarea>
+        </div>
+
+        <button type="button" id="btn-save-integration" class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold transition">
+          ✓ Save Integration Entry to Local Vault
+        </button>
+
+        <div id="integration-history" class="space-y-2 pt-2"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- MODULE 7: MAPS, FREE SERVICES & AES-256-GCM VAULT          -->
+    <!-- ========================================================== -->
+    <section id="tab-maps" class="tab-content hidden space-y-4">
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl text-xs">
+        <div>
+          <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-semibold">Module 7 · Education Hub &amp; Encrypted System Vault</span>
+          <h2 class="text-base sm:text-lg font-bold text-white">MAPS, Harm-Reduction Lifelines &amp; Device Encryption</h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <a href="https://maps.org/" target="_blank" rel="noopener noreferrer" class="bg-slate-950 border border-amber-500/30 rounded-xl p-3.5 block hover:bg-slate-900 transition">
+            <span class="font-bold text-amber-400 block">MAPS (maps.org) ↗</span>
+            <p class="text-[11px] text-slate-300 mt-0.5">Clinical trials, psychedelic safety manuals, and integration education.</p>
+          </a>
+          <a href="https://zendoproject.org/" target="_blank" rel="noopener noreferrer" class="bg-slate-950 border border-emerald-500/30 rounded-xl p-3.5 block hover:bg-slate-900 transition">
+            <span class="font-bold text-emerald-400 block">Zendo Project (zendoproject.org) ↗</span>
+            <p class="text-[11px] text-slate-300 mt-0.5">Peer psychedelic harm-reduction sitting manuals and training.</p>
+          </a>
+          <a href="https://dancesafe.org/" target="_blank" rel="noopener noreferrer" class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 block hover:bg-slate-900 transition">
+            <span class="font-bold text-white block">DanceSafe (dancesafe.org) ↗</span>
+            <p class="text-[11px] text-slate-300 mt-0.5">Reagent testing kits, fentanyl test strips, and non-judgmental drug education.</p>
+          </a>
+          <a href="https://firesideproject.org/" target="_blank" rel="noopener noreferrer" class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 block hover:bg-slate-900 transition">
+            <span class="font-bold text-white block">Fireside Project (62-FIRESIDE) ↗</span>
+            <p class="text-[11px] text-slate-300 mt-0.5">Free psychedelic support line: 623-473-7433 (11 AM – 11 PM PT).</p>
+          </a>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2.5">
+          <span class="font-bold text-emerald-400 block">🔐 Encrypt &amp; Download MacrodoseIQ Vault (.enc)</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input id="macro-export-pass" type="password" placeholder="Passphrase (6+ chars)..." class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white">
+            <button type="button" id="btn-macro-export" class="py-2 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition">
+              Download AES-256-GCM .enc Backup
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-1.5">
+          <span class="font-bold text-amber-400 block">Built by Flude ("Floor Dude") · 100% Free Harm Reduction</span>
+          <p class="text-[11px] text-slate-300 leading-relaxed">
+            Whether you are exploring 0.10g on a Tuesday morning in <strong>MicrodoseIQ</strong> or navigating a deep journey with a trusted friend in <strong>MacrodoseIQ</strong>, real chemical knowledge and grounding belong to everyone for free. Remember the floor: you cannot fall off the floor, and it is always there to hold you while you breathe.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL 1: 1-TAP ROUGH TIME / SOS -->
+  <div id="modal-sos" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-950 border border-slate-800 max-w-lg w-full rounded-2xl p-5 space-y-4 shadow-2xl my-auto text-xs">
+      <div class="bg-red-950/60 border border-red-500/40 rounded-xl p-3 text-red-200 flex items-center justify-between gap-2">
+        <div>
+          <span class="font-bold text-red-400 block">🚨 Medical Emergency Red Flags (Call 911)</span>
+          <p class="text-[11px]">Trouble breathing, chest pain, seizures, severe overheating, or unconsciousness.</p>
+        </div>
+        <a href="tel:911" class="px-3 py-2 bg-red-600 text-white rounded-lg font-extrabold shrink-0">Call 911</a>
+      </div>
+
+      <div class="text-center space-y-1">
+        <h3 class="text-lg font-bold text-white">Get down on the floor. You are safe.</h3>
+        <p class="text-xs text-amber-300 font-medium">"This wave is temporary. Float downstream with your breath—do not fight the current."</p>
+      </div>
+
+      <div class="grid grid-cols-4 gap-1.5">
+        <button type="button" class="sos-sound-btn py-2 px-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 font-medium text-[11px]" data-sound="chants">🕯️ Chants</button>
+        <button type="button" class="sos-sound-btn py-2 px-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 font-medium text-[11px]" data-sound="rain">🌧️ Rain</button>
+        <button type="button" class="sos-sound-btn py-2 px-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 font-medium text-[11px]" data-sound="brown">🌊 Brown</button>
+        <button type="button" class="sos-sound-btn py-2 px-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 font-medium text-[11px]" data-sound="off">🔇 Mute</button>
+      </div>
+
+      <div class="space-y-2">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+          <div>
+            <span class="font-bold text-white block">Fireside Project (62-FIRESIDE)</span>
+            <span class="text-[11px] text-slate-400">623-473-7433 · 11 AM – 11 PM PT</span>
+          </div>
+          <a href="tel:6234737433" class="px-3 py-1.5 rounded-lg bg-amber-600 text-white font-bold">Call / Text</a>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+          <div>
+            <span class="font-bold text-white block">988 Crisis Lifeline (24/7)</span>
+            <span class="text-[11px] text-slate-400">Free, confidential 24/7 support</span>
+          </div>
+          <a href="tel:988" class="px-3 py-1.5 rounded-lg bg-slate-800 text-white font-bold">Call / Text</a>
+        </div>
+      </div>
+
+      <button type="button" id="btn-close-sos" class="w-full py-2.5 bg-slate-800 text-white rounded-xl font-bold">Return to Companion</button>
+    </div>
+  </div>
+
+  <!-- MODAL 2: OFFLINE QR SHARE -->
+  <div id="modal-share" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-slate-950 border border-slate-800 max-w-sm w-full rounded-2xl p-5 text-center space-y-4">
+      <h3 class="text-sm font-bold text-white">Share MacrodoseIQ Offline</h3>
+      <div class="w-44 h-44 mx-auto bg-white p-3 rounded-xl flex items-center justify-center">
+        <svg viewBox="0 0 100 100" class="w-full h-full text-slate-950 fill-current">
+          <path d="M10,10 h30 v30 h-30 z M15,15 v20 h20 v-20 z M20,20 h10 v10 h-10 z M60,10 h30 v30 h-30 z M65,15 v20 h20 v-20 z M70,20 h10 v10 h-10 z M10,60 h30 v30 h-30 z M15,65 v20 h20 v-20 z M20,70 h10 v10 h-10 z M45,15 h10 v10 h-10 z M45,35 h10 v10 h-10 z M15,45 h10 v10 h-10 z M35,45 h10 v10 h-10 z M55,45 h15 v10 h-15 z M45,60 h10 v20 h-10 z M60,60 h20 v10 h-20 z M75,75 h15 v15 h-15 z"/>
+        </svg>
+      </div>
+      <button type="button" id="btn-close-share" class="w-full py-2 bg-slate-800 text-white rounded-xl text-xs font-bold">Done</button>
+    </div>
+  </div>
+
+  <footer class="border-t border-slate-900 bg-slate-950 px-4 py-3 text-center text-[11px] text-slate-400">
+    MacrodoseIQ v1.0 &middot; Sister App to MicrodoseIQ &middot; Built by Flude &middot; 100% Free
+  </footer>
+
+  <script>
+    function escapeHtml(s) {
+      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function showToast(msg, type = 'success') {
+      const c = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = `px-3.5 py-2 rounded-xl border shadow-xl text-xs font-semibold ${type === 'error' ? 'bg-red-950 border-red-700 text-red-200' : 'bg-amber-950 border-amber-600 text-amber-200'}`;
+      t.textContent = msg;
+      c.appendChild(t);
+      setTimeout(() => t.remove(), 2500);
+    }
+
+    let state = {
+      weight: 175,
+      unit: 'lbs',
+      journeyStart: null,
+      intLogs: [],
+      breathMode: 'sigh',
+      breathIdx: 0,
+      breathSec: 3,
+      audioCtx: null,
+      soundNodes: []
+    };
+
+    try {
+      const savedInt = localStorage.getItem('macroiq_int_logs');
+      if (savedInt) state.intLogs = JSON.parse(savedInt);
+      const savedStart = localStorage.getItem('macroiq_journey_start');
+      if (savedStart) state.journeyStart = Number(savedStart);
+    } catch (e) {}
+
+    // Tab switching
+    function switchTab(id) {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.className = b.getAttribute('data-tab') === id
+          ? 'tab-btn px-3 py-1.5 rounded-lg font-semibold text-amber-400 bg-slate-800/90 whitespace-nowrap transition flex items-center gap-1.5'
+          : 'tab-btn px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-slate-200 whitespace-nowrap transition flex items-center gap-1.5';
+      });
+      document.querySelectorAll('.tab-content').forEach(s => s.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+    document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => switchTab(b.getAttribute('data-tab'))));
+    document.getElementById('btn-header-vault').addEventListener('click', () => switchTab('tab-maps'));
+
+    // Module 1: Macrodose Tiers
+    const macroData = {
+      psilo_dried: {
+        title: "Psilocybe cubensis (Dried Mushrooms)", badge: "Classical Tryptamine · 5-HT2A Agonist",
+        kinetics: "Onset: 20–45m · Peak: 90–180m · Total: 4–6h",
+        tiers: ["0.25–0.5 g", "0.75–1.25 g", "1.5–2.5 g", "2.75–3.5 g", "4.0–5.0 g+"],
+        weightNote: "Clinical trials (Johns Hopkins) show central 5-HT2A response is largely independent of body weight between 50–100 kg; fixed gram tiers are safer than aggressive weight multiplication.",
+        safety: "Grind and homogenize dried mushrooms to even out cap/stem potency swings. Steep in ~80°C water with ginger to reduce chitin nausea."
+      },
+      psilo_pe: {
+        title: "Penis Envy / APE / Potent Strains", badge: "High-Potency Psilocybe (1.5x–2.2x)",
+        kinetics: "Onset: 20–40m · Peak: 90–180m · Total: 4.5–6.5h",
+        tiers: ["0.15–0.3 g", "0.4–0.75 g", "0.8–1.4 g", "1.5–2.2 g", "2.5 g+"],
+        weightNote: "Penis Envy (PE), Albino Penis Envy (APE), and wood-lovers (P. azurescens) test 1.5x to 2.5x stronger than standard Golden Teacher.",
+        safety: "1.5g of APE can feel like 3.5g of standard cubensis. Always test a new batch at the Light tier first."
+      },
+      lsd_25: {
+        title: "LSD-25 (Blotter / Pyramid Gel Tab / Liquid)", badge: "Ergoline · 10–14 Hour Arc",
+        kinetics: "Onset: 30–60m · Peak: 2–4h · Total: 10–14h",
+        tiers: ["15–25 µg", "30–65 µg", "75–150 µg", "175–250 µg", "300 µg+"],
+        weightNote: "LSD crosses the blood-brain barrier in micrograms with virtually zero dependence on body weight.",
+        safety: "Test every batch with Ehrlich & Hofmann reagents to rule out vasoconstrictive 25I-NBOMe. Remember street pyramid gel tabs are often laid at 150–250 µg."
+      },
+      prodrug_lsd: {
+        title: "1P-LSD / 1cP-LSD / 1V-LSD (Lysergamide Prodrugs)", badge: "Stoichiometric LSD Prodrugs",
+        kinetics: "Onset: 35–75m · Peak: 2.5–4.5h · Total: 10–14h",
+        tiers: ["20–30 µg", "40–75 µg", "85–160 µg", "175–275 µg", "300 µg+"],
+        weightNote: "Theoretical molecular mass ratios: 1P-LSD (~0.85x), 1cP-LSD (~0.826x), 1V-LSD (~0.794x).",
+        safety: "Laboratory-laid prodrug blotters are often more accurately dosed than street tabs, so 100 µg of 1P-LSD can feel noticeably stronger than an under-dosed street tab."
+      },
+      mdma: {
+        title: "MDMA (Crystal / Tested Press · Weight-Calibrated)", badge: "Entactogen · Weight-Dependent Ceiling",
+        kinetics: "Onset: 30–60m · Peak: 90–180m · Total: 4–6h",
+        tiers: ["30–45 mg", "50–75 mg", "80–120 mg", "125–150 mg", "Do Not Exceed"],
+        weightNote: "DYNAMIC_MDMA",
+        safety: "RAVE & HYDRATION RULE: Drink ~250 mL (1 cup) of water/electrolytes per hour while dancing—never chug gallons of plain water (prevents fatal hyponatremia). Take cooling breaks and wait 6–12 weeks between rolls."
+      },
+      phen_2cb: {
+        title: "2C-B (Oral Phenethylamine · Steep Dose Curve)", badge: "⚠️ Steep Nonlinear Dose-Response",
+        kinetics: "Onset: 45–75m · Peak: 2–3.5h · Total: 5–8h",
+        tiers: ["3–6 mg", "8–12 mg", "14–22 mg", "24–30 mg", "32 mg+"],
+        weightNote: "2C-B has one of the steepest dose curves in pharmacology: every 2–4 mg increase above 16 mg dramatically intensifies visuals and body load.",
+        safety: "Weigh on a calibrated 0.001g milligram scale or use volumetric liquid dilution."
+      },
+      mescaline: {
+        title: "Mescaline HCl (San Pedro / Bridgesii Reference)", badge: "Classical Phenethylamine · 10–14h Arc",
+        kinetics: "Onset: 60–120m · Peak: 3–6h · Total: 10–14h",
+        tiers: ["50–90 mg", "100–175 mg", "200–350 mg", "375–500 mg", "550 mg+"],
+        weightNote: "250 mg Mescaline HCl is roughly equivalent to 25–35g dried San Pedro skin powder (though natural cactus alkaloid content varies 1x–5x).",
+        safety: "Sip cactus tea slowly over 30–45 minutes with ginger to minimize early gastric nausea."
+      },
+      ketamine: {
+        title: "Ketamine HCl (Intranasal / Sublingual Reference)", badge: "Dissociative NMDA Antagonist",
+        kinetics: "Onset: 5–15m · Peak: 20–45m · Total: 60–90m",
+        tiers: ["10–20 mg", "25–45 mg", "50–90 mg", "100–150 mg", "1.0 mg/lb+ (K-Hole)"],
+        weightNote: "DYNAMIC_KET",
+        safety: "LETHAL CONTRAINDICATION: Never mix Ketamine with alcohol, opioids, or GHB (causes blackout vomiting and fatal aspiration). Always sit or lie down on a soft surface."
+      },
+      dmt_vaped: {
+        title: "N,N-DMT (Vaporized Freebase)", badge: "Ultra-Rapid Breakthrough Tryptamine",
+        kinetics: "Onset: 15–45 sec · Peak: 2–5m · Total: 10–20m",
+        tiers: ["2–5 mg", "8–14 mg", "15–25 mg", "28–40 mg", "45 mg+"],
+        weightNote: "Efficiently vaporized DMT requires only 20–30 mg for a full breakthrough regardless of body weight.",
+        safety: "Must be seated or lying down with a sober friend holding the hot vapor device."
+      },
+      ayahuasca: {
+        title: "Oral Ayahuasca / Pharmahuasca (MAOI + DMT)", badge: "⛔ Strict MAOI Contraindication Gate",
+        kinetics: "Onset: 30–60m · Peak: 1.5–3.5h · Total: 4–7h",
+        tiers: ["Micro Vine", "Light Brew", "Standard Cup", "Strong Ceremony", "Heavy"],
+        weightNote: "Combines reversible MAO-A inhibition (B. caapi / Syrian Rue) with oral N,N-DMT.",
+        safety: "FATAL INTERACTION GATE: Strictly contraindicated with SSRIs, SNRIs, MDMA, Tramadol, DXM, and amphetamines (requires 2–6 week washout depending on SSRI half-life)."
+      },
+      dmt_5meo: {
+        title: "5-MeO-DMT (Vaporized Reference Monograph)", badge: "⛔ Sitter Mandatory · Fatal with MAOIs",
+        kinetics: "Onset: 10–30 sec · Peak: 2–6m · Total: 15–30m",
+        tiers: ["1–2 mg", "3–5 mg", "6–10 mg", "12–15 mg", "Do Not Exceed"],
+        weightNote: "4–10x more potent by mass than N,N-DMT. Non-visual, overwhelming non-dual somatic release.",
+        safety: "NEVER take solo (vomiting while supine requires a sitter to maintain recovery position) and NEVER combine with MAOIs or harmalas (fatal)."
+      }
+    };
+
+    const macroWeight = document.getElementById('macro-weight');
+    const macroSub = document.getElementById('macro-substance');
+    const macroMed = document.getElementById('macro-quick-med');
+
+    function updateMacroTiers() {
+      const rawW = parseFloat(macroWeight.value) || 175;
+      const kg = state.unit === 'lbs' ? rawW * 0.45359237 : rawW;
+      const lbs = state.unit === 'lbs' ? rawW : rawW / 0.45359237;
+      document.getElementById('macro-weight-label').textContent = state.unit === 'lbs'
+        ? `lbs (${kg.toFixed(1)} kg)`
+        : `kg (${Math.round(lbs)} lbs)`;
+
+      const sub = macroData[macroSub.value] || macroData.psilo_dried;
+      document.getElementById('macro-sub-badge').textContent = sub.badge;
+      document.getElementById('macro-sub-title').textContent = sub.title;
+      document.getElementById('macro-sub-kinetics').textContent = sub.kinetics;
+
+      for (let i = 0; i < 5; i++) {
+        document.getElementById(`tier-${i + 1}`).textContent = sub.tiers[i];
+      }
+
+      if (sub.weightNote === 'DYNAMIC_MDMA') {
+        const mapsTarget = Math.min(125, Math.round(kg * 1.5));
+        const booster = Math.round(mapsTarget * 0.5);
+        document.getElementById('tier-3').textContent = `${mapsTarget} mg`;
+        document.getElementById('macro-weight-guidance').textContent =
+          `⚖️ Calibrated for your weight (${kg.toFixed(1)} kg): Harm-reduction guideline (1.5 mg/kg, capped at 120–125 mg) suggests ~${mapsTarget} mg initial dose (with an optional ${booster} mg booster at +90 mins). Higher doses increase jaw clenching and neurotoxic crash without increasing empathy.`;
+      } else if (sub.weightNote === 'DYNAMIC_KET') {
+        const lightMg = Math.round(lbs * 0.25);
+        const commonMg = Math.round(lbs * 0.45);
+        const kholeMg = Math.round(lbs * 0.95);
+        document.getElementById('macro-weight-guidance').textContent =
+          `⚖️ Calibrated for your weight (${Math.round(lbs)} lbs): Intranasal reference approximates ~${lightMg} mg (Light), ~${commonMg} mg (Moderate), and ~${kholeMg} mg (Full Dissociative / K-Hole).`;
+      } else {
+        document.getElementById('macro-weight-guidance').textContent = `⚖️ Weight & Pharmacology Context: ${sub.weightNote}`;
+      }
+      document.getElementById('macro-safety-guidance').textContent = `🛡️ Harm-Reduction Guardrail: ${sub.safety}`;
+
+      const critBanner = document.getElementById('macro-critical-banner');
+      const critText = document.getElementById('macro-critical-text');
+      const medVal = macroMed.value;
+      const critMessages = {
+        lithium: "Lithium + classic psychedelics carries an extreme risk of grand mal seizures and acute neurotoxicity. Do not combine.",
+        tramadol: "Tramadol lowers the seizure threshold and blocks serotonin reuptake—high risk of convulsions and serotonin syndrome.",
+        maoi: "MAOIs / RIMAs cause fatal serotonin syndrome with MDMA, 2C-B, 5-MeO-DMT, or SSRIs.",
+        dxm: "DXM cough suppressants combined with psychedelics or MDMA trigger acute serotonin toxicity.",
+        alcohol_ket: "Combining Alcohol, Opioids, or GHB with Ketamine causes unconscious vomiting and fatal aspiration asphyxiation."
+      };
+      if (critMessages[medVal]) {
+        critBanner.classList.remove('hidden');
+        critText.textContent = critMessages[medVal];
+      } else {
+        critBanner.classList.add('hidden');
+      }
+    }
+
+    document.getElementById('macro-btn-lbs').addEventListener('click', () => {
+      if (state.unit !== 'lbs') {
+        macroWeight.value = Math.round((parseFloat(macroWeight.value) || 79.4) / 0.45359237);
+        state.unit = 'lbs';
+        document.getElementById('macro-btn-lbs').className = 'px-2 py-0.5 rounded bg-amber-600 text-white font-bold';
+        document.getElementById('macro-btn-kg').className = 'px-2 py-0.5 rounded text-slate-400';
+        updateMacroTiers();
+      }
+    });
+    document.getElementById('macro-btn-kg').addEventListener('click', () => {
+      if (state.unit !== 'kg') {
+        macroWeight.value = ((parseFloat(macroWeight.value) || 175) * 0.45359237).toFixed(1);
+        state.unit = 'kg';
+        document.getElementById('macro-btn-kg').className = 'px-2 py-0.5 rounded bg-amber-600 text-white font-bold';
+        document.getElementById('macro-btn-lbs').className = 'px-2 py-0.5 rounded text-slate-400';
+        updateMacroTiers();
+      }
+    });
+    [macroWeight, macroSub, macroMed].forEach(el => {
+      el.addEventListener('input', updateMacroTiers);
+      el.addEventListener('change', updateMacroTiers);
+    });
+
+    // Module 2: Reagent Lab
+    const reagentProfiles = {
+      lsd: [
+        { name: "Ehrlich Reagent", color: "bg-purple-600", expected: "Clear -> Pink -> Deep Purple (1–3 mins)", warn: "No color change = DANGER (25I-NBOMe / DOx adulterant)." },
+        { name: "Hofmann Reagent", color: "bg-indigo-600", expected: "Deep Blue / Violet", warn: "Confirms LSD-25 over other indoles like 5-HTP or melatonin." },
+        { name: "Marquis Reagent", color: "bg-stone-700", expected: "No flash (Olive/grey on paper)", warn: "Bright colors on Marquis indicate phenethylamine/NBOMe adulteration." }
+      ],
+      mdma: [
+        { name: "Marquis Reagent", color: "bg-purple-950", expected: "Instant Purple -> Pitch Black (1–3 sec)", warn: "Orange/Brown = Methamphetamine/Amphetamine; Yellow = Methylone/Bath Salts." },
+        { name: "Mecke Reagent", color: "bg-emerald-950", expected: "Dark Green -> Blue-Black", warn: "No reaction or yellow indicates synthetic cathinones." },
+        { name: "Simon's A+B", color: "bg-blue-600", expected: "Cobalt Blue (Confirms MDMA vs MDA)", warn: "No color change = MDA (longer duration, heavier visuals)." }
+      ],
+      "2cb": [
+        { name: "Marquis Reagent", color: "bg-emerald-500", expected: "Bright Yellow -> Emerald Green", warn: "Purple/Black = MDMA; Orange = Amphetamine." },
+        { name: "Mecke Reagent", color: "bg-yellow-600", expected: "Yellow -> Greenish-Brown", warn: "Confirms 2C-B phenethylamine structure." },
+        { name: "Froehde Reagent", color: "bg-lime-500", expected: "Bright Yellow-Green", warn: "Always test powder with a fentanyl strip (10mg in 5mL water)." }
+      ],
+      ketamine: [
+        { name: "Morris A+B Reagent", color: "bg-violet-400", expected: "Bright Lavender / Purple", warn: "Blueish-green indicates novel dissociatives (2-FDCK, DCK, FXE) or cocaine." },
+        { name: "Mecke Reagent", color: "bg-slate-800", expected: "No Color Change (Clear)", warn: "Any dark reaction indicates MDMA, opioid, or sugar cut." },
+        { name: "Liebermann Reagent", color: "bg-yellow-200", expected: "Faint Light Yellow", warn: "Test every batch with a fentanyl strip (10mg in 1mL water)." }
+      ],
+      dmt: [
+        { name: "Ehrlich Reagent", color: "bg-fuchsia-600", expected: "Rapid Magenta -> Deep Violet", warn: "Confirms tryptamine indole ring." },
+        { name: "Hofmann Reagent", color: "bg-yellow-500", expected: "Yellow -> Greenish-Blue", warn: "Distinguishes N,N-DMT (yellow) from 5-MeO-DMT (dark green/blue)." },
+        { name: "Marquis Reagent", color: "bg-amber-600", expected: "Orange -> Warm Brown", warn: "Verify whether sample is N,N-DMT vs 5-MeO-DMT before dosing!" }
+      ]
+    };
+
+    function renderReagents() {
+      const key = document.getElementById('reagent-compound-select').value;
+      const items = reagentProfiles[key] || reagentProfiles.lsd;
+      document.getElementById('reagent-swatches-grid').innerHTML = items.map(r => `
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-white">${escapeHtml(r.name)}</span>
+            <span class="w-6 h-6 rounded-full border border-white/30 ${r.color}"></span>
+          </div>
+          <div class="text-[11px] font-semibold text-emerald-300">${escapeHtml(r.expected)}</div>
+          <p class="text-[10px] text-slate-400 leading-relaxed">${escapeHtml(r.warn)}</p>
+        </div>
+      `).join('');
+    }
+    document.getElementById('reagent-compound-select').addEventListener('change', renderReagents);
+
+    // Module 3: Pre-Flight Checklist Counter
+    document.querySelectorAll('.preflight-chk').forEach(chk => {
+      chk.addEventListener('change', () => {
+        const count = document.querySelectorAll('.preflight-chk:checked').length;
+        document.getElementById('preflight-score').textContent = `${count} / 6 Checked`;
+      });
+    });
+
+    // Module 4: Live Journey Phase Clock
+    function updateJourneyClock() {
+      const title = document.getElementById('journey-phase-title');
+      const badge = document.getElementById('journey-elapsed-badge');
+      const desc = document.getElementById('journey-phase-desc');
+      [1, 2, 3, 4].forEach(i => {
+        document.getElementById(`phase-box-${i}`).className = 'p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400';
+      });
+
+      if (!state.journeyStart) {
+        title.textContent = 'Not Started (Tap Start Journey at Ingestion)';
+        badge.textContent = 'T+ 0h 00m';
+        return;
+      }
+
+      const mins = Math.max(0, Math.floor((Date.now() - state.journeyStart) / 60000));
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      badge.textContent = `T+ ${h}h ${String(m).padStart(2, '0')}m`;
+
+      let activeBox = 1;
+      if (mins < 90) {
+        activeBox = 1;
+        title.textContent = 'Phase 1: Ingestion & Come-Up (0–90m)';
+        desc.textContent = 'Body temperature shifts and butterflies are normal as receptors engage. Sit comfortably, breathe slowly, and sip water.';
+      } else if (mins < 240) {
+        activeBox = 2;
+        title.textContent = 'Phase 2: Peak Plateau (1.5–4h)';
+        desc.textContent = 'The crest of the wave. Trust, let go, and float downstream. If intensity rises, drop to the floor and follow the breathing circle.';
+      } else if (mins < 360) {
+        activeBox = 3;
+        title.textContent = 'Phase 3: Gentle Return (4–6h)';
+        desc.textContent = 'Waves are softening. Enjoy light fruit, calm music, and warm blankets without rushing to analyze the trip.';
+      } else {
+        activeBox = 4;
+        title.textContent = 'Phase 4: Evening Landing & Afterglow (6h+)';
+        desc.textContent = 'Hydrate, rest deeply, and jot down a brief note for your Day 1 integration tomorrow.';
+      }
+      document.getElementById(`phase-box-${activeBox}`).className = 'p-2 rounded-lg bg-amber-950 border border-amber-500 text-amber-300 font-bold';
+    }
+
+    document.getElementById('btn-start-journey').addEventListener('click', () => {
+      state.journeyStart = Date.now();
+      try { localStorage.setItem('macroiq_journey_start', String(state.journeyStart)); } catch (e) {}
+      updateJourneyClock();
+      showToast('Journey phase clock started (T+ 0h 00m)!');
+    });
+    document.getElementById('btn-clear-journey').addEventListener('click', () => {
+      state.journeyStart = null;
+      try { localStorage.removeItem('macroiq_journey_start'); } catch (e) {}
+      updateJourneyClock();
+      showToast('Reset journey clock.');
+    });
+    setInterval(updateJourneyClock, 15000);
+
+    // Module 5: Breathing & Web Audio
+    const breathModes = {
+      sigh: [
+        { label: "Inhale Nose", sub: "Deep belly breath", sec: 3, scale: "scale-110" },
+        { label: "Sip In More!", sub: "Top off lungs", sec: 2, scale: "scale-125" },
+        { label: "Long Exhale...", sub: "Slow mouth release", sec: 6, scale: "scale-75" }
+      ],
+      "478": [
+        { label: "Inhale (4s)", sub: "Steady nose breath", sec: 4, scale: "scale-125" },
+        { label: "Hold (7s)", sub: "Soften shoulders", sec: 7, scale: "scale-125" },
+        { label: "Exhale (8s)", sub: "Long release", sec: 8, scale: "scale-75" }
+      ],
+      box: [
+        { label: "Inhale (4s)", sub: "Expand", sec: 4, scale: "scale-125" },
+        { label: "Hold (4s)", sub: "Stillness", sec: 4, scale: "scale-125" },
+        { label: "Exhale (4s)", sub: "Release", sec: 4, scale: "scale-75" },
+        { label: "Rest (4s)", sub: "Grounded", sec: 4, scale: "scale-75" }
+      ]
+    };
+
+    setInterval(() => {
+      const steps = breathModes[state.breathMode] || breathModes.sigh;
+      state.breathSec -= 1;
+      if (state.breathSec <= 0) {
+        state.breathIdx = (state.breathIdx + 1) % steps.length;
+        state.breathSec = steps[state.breathIdx].sec;
+      }
+      const step = steps[state.breathIdx];
+      const outer = document.getElementById('main-breath-outer');
+      const mid = document.getElementById('main-breath-mid');
+      ['scale-75', 'scale-90', 'scale-110', 'scale-125'].forEach(c => { outer.classList.remove(c); mid.classList.remove(c); });
+      outer.classList.add(step.scale);
+      mid.classList.add(step.scale);
+      document.getElementById('main-breath-phase').textContent = step.label;
+      document.getElementById('main-breath-timer').textContent = `${state.breathSec}s`;
+      document.getElementById('main-breath-sub').textContent = step.sub;
+    }, 1000);
+
+    document.querySelectorAll('.breath-mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.breathMode = btn.getAttribute('data-mode');
+        state.breathIdx = 0;
+        state.breathSec = 3;
+      });
+    });
+
+    function playMacroSound(type) {
+      state.soundNodes.forEach(n => {
+        try { if (n.stop) n.stop(); } catch (e) {}
+        try { if (n.disconnect) n.disconnect(); } catch (e) {}
+      });
+      state.soundNodes = [];
+      const badge = document.getElementById('audio-state-badge');
+      if (type === 'off') {
+        badge.textContent = 'Muted · Opt-In';
+        return;
+      }
+      if (!state.audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        state.audioCtx = new AC();
+      }
+      if (state.audioCtx.state === 'suspended') state.audioCtx.resume();
+      const ctx = state.audioCtx;
+      const gain = ctx.createGain();
+      gain.gain.value = 0.16;
+      gain.connect(ctx.destination);
+      state.soundNodes.push(gain);
+
+      if (type === 'chants') {
+        [65.41, 98.0, 130.81].forEach(f => {
+          const o = ctx.createOscillator();
+          o.type = 'sawtooth';
+          o.frequency.value = f;
+          const lp = ctx.createBiquadFilter();
+          lp.type = 'lowpass';
+          lp.frequency.value = 240;
+          o.connect(lp);
+          lp.connect(gain);
+          o.start();
+          state.soundNodes.push(o, lp);
+        });
+        badge.textContent = 'Playing: Rhythmic Chants';
+      } else if (type === 'bowl') {
+        const o = ctx.createOscillator();
+        o.frequency.value = 432;
+        o.connect(gain);
+        o.start();
+        state.soundNodes.push(o);
+        badge.textContent = 'Playing: 432 Hz Bowl';
+      } else {
+        const buf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        let last = 0;
+        for (let i = 0; i < d.length; i++) {
+          const w = Math.random() * 2 - 1;
+          last = (last + 0.02 * w) / 1.02;
+          d[i] = type === 'rain' ? w * 0.15 : last * 3.0;
+        }
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        src.loop = true;
+        const lp = ctx.createBiquadFilter();
+        lp.type = 'lowpass';
+        lp.frequency.value = type === 'rain' ? 950 : 260;
+        src.connect(lp);
+        lp.connect(gain);
+        src.start();
+        state.soundNodes.push(src, lp);
+        badge.textContent = type === 'rain' ? 'Playing: Soft Rain' : 'Playing: Brown Noise';
+      }
+    }
+    document.querySelectorAll('.sound-btn, .sos-sound-btn').forEach(b => {
+      b.addEventListener('click', () => playMacroSound(b.getAttribute('data-sound')));
+    });
+
+    // Module 6: Integration Journal
+    function renderIntegration() {
+      const box = document.getElementById('integration-history');
+      if (!state.intLogs.length) {
+        box.innerHTML = `<div class="p-3 text-center text-slate-400 bg-slate-950 rounded-xl border border-slate-800">No integration entries recorded yet.</div>`;
+        return;
+      }
+      box.innerHTML = state.intLogs.map(item => `
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+          <div class="flex justify-between">
+            <span class="font-bold text-amber-300">${escapeHtml(item.milestone)}</span>
+            <span class="text-[10px] font-mono text-slate-400">${escapeHtml(item.date)}</span>
+          </div>
+          <div class="text-[11px] text-emerald-300 font-mono">${escapeHtml(item.substance)}</div>
+          <p class="text-xs text-slate-200">${escapeHtml(item.notes)}</p>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('btn-save-integration').addEventListener('click', () => {
+      const notes = document.getElementById('int-notes').value.trim();
+      if (!notes) { showToast('Write a brief integration note first.', 'error'); return; }
+      state.intLogs.unshift({
+        milestone: document.getElementById('int-milestone').value,
+        substance: document.getElementById('int-substance').value.trim() || 'Journey Reflection',
+        notes,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      });
+      try { localStorage.setItem('macroiq_int_logs', JSON.stringify(state.intLogs)); } catch (e) {}
+      document.getElementById('int-notes').value = '';
+      renderIntegration();
+      showToast('✓ Saved to local integration journal!');
+    });
+
+    // Module 7: Encrypted Export
+    document.getElementById('btn-macro-export').addEventListener('click', async () => {
+      const pass = document.getElementById('macro-export-pass').value;
+      if (!pass || pass.length < 6) { showToast('Enter a passphrase (6+ chars).', 'error'); return; }
+      const enc = new TextEncoder();
+      const salt = window.crypto.getRandomValues(new Uint8Array(16));
+      const iv = window.crypto.getRandomValues(new Uint8Array(12));
+      const km = await window.crypto.subtle.importKey('raw', enc.encode(pass), { name: 'PBKDF2' }, false, ['deriveKey']);
+      const key = await window.crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' }, km, { name: 'AES-GCM', length: 256 }, false, ['encrypt']);
+      const ct = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(JSON.stringify(state.intLogs)));
+      const blob = new Blob([JSON.stringify({ app: 'MacrodoseIQ', cipher: 'AES-256-GCM', data: ct.byteLength })], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'macrodoseiq-vault.enc';
+      a.click();
+      showToast('✓ Downloaded encrypted MacrodoseIQ .enc backup!');
+    });
+
+    // Modals
+    document.getElementById('btn-open-sos').addEventListener('click', () => document.getElementById('modal-sos').classList.remove('hidden'));
+    document.getElementById('btn-close-sos').addEventListener('click', () => document.getElementById('modal-sos').classList.add('hidden'));
+    document.getElementById('btn-open-share').addEventListener('click', () => document.getElementById('modal-share').classList.remove('hidden'));
+    document.getElementById('btn-close-share').addEventListener('click', () => document.getElementById('modal-share').classList.add('hidden'));
+
+    updateMacroTiers();
+    renderReagents();
+    updateJourneyClock();
+    renderIntegration();
+
+    if ('serviceWorker' in navigator && location.protocol === 'https:') {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
