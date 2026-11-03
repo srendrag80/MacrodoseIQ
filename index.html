@@ -1139,8 +1139,17 @@
     renderIntegration();
 
     if ('serviceWorker' in navigator && location.protocol === 'https:') {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      window.addEventListener('load', async () => {
+        try {
+          if (window.caches) {
+            const keys = await caches.keys();
+            for (const k of keys) {
+              if (k !== 'macrodoseiq-netfirst-v3') await caches.delete(k);
+            }
+          }
+          const reg = await navigator.serviceWorker.register('./sw.js?v=3');
+          if (reg && reg.update) reg.update();
+        } catch (e) {}
       });
     }
   </script>

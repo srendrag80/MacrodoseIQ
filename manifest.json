@@ -1,9 +1,8 @@
 {
-  "id": "./index.html?app=macrodoseiq-flude-v2",
-  "name": "MacrodoseIQ Flude Edition",
+  "name": "MacrodoseIQ \u2014 Full Journey Companion",
   "short_name": "MacrodoseIQ",
   "description": "100% free, zero-knowledge encrypted full-journey harm-reduction companion: weight & dose-tier calculator, colorimetric reagent lab, sober sitter dashboard, breathing & sound sanctuary, and 30-day integration journal. Built by Flude.",
-  "start_url": "./index.html?app=macrodoseiq-flude-v2",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -22,12 +21,6 @@
       "purpose": "any"
     },
     {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
@@ -38,12 +31,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
-    },
-    {
-      "src": "icon-192.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
     }
   ]
 }
