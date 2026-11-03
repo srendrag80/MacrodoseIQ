@@ -1,4 +1,4 @@
-const CACHE_NAME = 'macrodoseiq-v1.0-pwa';
+const CACHE_NAME = 'macrodoseiq-flude-v2.0';
 const ASSETS = [
   './',
   './index.html',

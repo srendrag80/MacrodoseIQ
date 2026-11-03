@@ -1,9 +1,9 @@
 {
-  "id": "./index.html",
-  "name": "MacrodoseIQ \u2014 Journey Harm-Reduction, Sitter & Integration Companion",
+  "id": "./index.html?app=macrodoseiq-flude-v2",
+  "name": "MacrodoseIQ Flude Edition",
   "short_name": "MacrodoseIQ",
   "description": "100% free, zero-knowledge encrypted full-journey harm-reduction companion: weight & dose-tier calculator, colorimetric reagent lab, sober sitter dashboard, breathing & sound sanctuary, and 30-day integration journal. Built by Flude.",
-  "start_url": "./index.html",
+  "start_url": "./index.html?app=macrodoseiq-flude-v2",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",

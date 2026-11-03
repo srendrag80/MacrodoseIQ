@@ -160,9 +160,11 @@
               <option value="phen_2cb">2C-B (Oral Phenethylamine · Steep Curve)</option>
               <option value="mescaline">Mescaline HCl (San Pedro / Bridgesii)</option>
               <option value="ketamine">Ketamine (Intranasal / Sublingual Reference)</option>
-              <option value="dmt_vaped">N,N-DMT (Vaporized Freebase)</option>
-              <option value="ayahuasca">Oral Ayahuasca / Pharmahuasca (MAOI Gate)</option>
-              <option value="dmt_5meo">5-MeO-DMT (Vaporized · Fatal MAOI Lockout)</option>
+              <option value="dmt_vaped">Regular DMT (N,N-Dimethyltryptamine · Freebase Crystal)</option>
+              <option value="dmt_cart">Regular DMT (N,N-Dimethyltryptamine · Vape Cart / E-Liquid)</option>
+              <option value="dmt_changa">Changa (Regular N,N-DMT + Harmala MAOI Herb Blend)</option>
+              <option value="ayahuasca">Oral Regular DMT (Ayahuasca / Pharmahuasca · MAOI Gate)</option>
+              <option value="dmt_5meo">5-MeO-DMT (Toad / Synthetic · 4-10x Stronger · Fatal w/ MAOI)</option>
             </select>
           </div>
 
@@ -219,6 +221,24 @@
             <p id="macro-weight-guidance" class="text-[11px] text-slate-200 leading-relaxed"></p>
             <p id="macro-safety-guidance" class="text-[11px] text-amber-300/90 leading-relaxed pt-1 border-t border-slate-800"></p>
           </div>
+
+          <!-- Regular Dimethyltryptamine (N,N-DMT) vs. 5-MeO-DMT Critical Distinction Box -->
+          <div class="bg-slate-900/95 border border-emerald-500/30 rounded-xl p-3.5 text-xs space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-emerald-400">🔬 Regular Dimethyltryptamine (N,N-DMT) vs. 5-MeO-DMT Distinction</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800">Never Confuse the Two</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px]">
+              <div class="bg-slate-950 border border-emerald-500/30 rounded-lg p-2.5 space-y-1">
+                <span class="font-bold text-emerald-300 block">Regular DMT (N,N-Dimethyltryptamine)</span>
+                <p class="text-slate-300">Extracted from <em>Mimosa hostilis</em> or <em>Acacia confusa</em>. Vivid geometric/visual breakthroughs at <strong>15–35 mg</strong> vaporized (160–180°C). Compatible with harmala MAOIs in Changa and Ayahuasca.</p>
+              </div>
+              <div class="bg-slate-950 border border-red-500/40 rounded-lg p-2.5 space-y-1">
+                <span class="font-bold text-red-300 block">5-MeO-DMT (5-Methoxy-DMT / Bufo)</span>
+                <p class="text-slate-300"><strong>4x to 10x more potent by weight</strong> (active at <strong>2–10 mg</strong>). Non-visual ego dissolution with heavy autonomic effects. <strong>STRICTLY FATAL if mixed with MAOIs/Changa/Ayahuasca</strong>.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -241,7 +261,7 @@
             <option value="mdma">MDMA / Molly (vs. Methamphetamine / Bath Salts)</option>
             <option value="2cb">2C-B (Phenethylamine)</option>
             <option value="ketamine">Ketamine HCl (vs. Novel Dissociatives)</option>
-            <option value="dmt">N,N-DMT / Psilocybin Indoles</option>
+            <option value="dmt">Regular Dimethyltryptamine (N,N-DMT) vs. 5-MeO-DMT</option>
           </select>
         </div>
 
@@ -717,11 +737,25 @@
         safety: "LETHAL CONTRAINDICATION: Never mix Ketamine with alcohol, opioids, or GHB (causes blackout vomiting and fatal aspiration). Always sit or lie down on a soft surface."
       },
       dmt_vaped: {
-        title: "N,N-DMT (Vaporized Freebase)", badge: "Ultra-Rapid Breakthrough Tryptamine",
+        title: "Regular DMT (N,N-Dimethyltryptamine · Freebase Crystal)", badge: "Classic Spirit Molecule · 5-HT2A/2C/1A Agonist",
         kinetics: "Onset: 15–45 sec · Peak: 2–5m · Total: 10–20m",
-        tiers: ["2–5 mg", "8–14 mg", "15–25 mg", "28–40 mg", "45 mg+"],
-        weightNote: "Efficiently vaporized DMT requires only 20–30 mg for a full breakthrough regardless of body weight.",
-        safety: "Must be seated or lying down with a sober friend holding the hot vapor device."
+        tiers: ["3–6 mg", "8–14 mg", "15–25 mg", "28–38 mg", "40 mg+"],
+        weightNote: "Regular N,N-Dimethyltryptamine is rapidly cleared by endogenous MAO enzymes and is not body-weight dependent. On efficient vaporizers (E-Mesh, Glass Vapor Genie, temp-controlled rig at 170°C), 25–30 mg produces a complete breakthrough.",
+        safety: "TEMPERATURE RULE: Vaporize gently at 160°C–180°C (320°F–356°F). Direct flame or red-hot bangers (>200°C) burn and pyrolyze DMT, producing harsh smoke and destroying potency. Always sit or lie down before inhaling."
+      },
+      dmt_cart: {
+        title: "Regular DMT (N,N-Dimethyltryptamine · Vape Cart / E-Liquid)", badge: "Volumetric PG / PEG-400 Vapor Cartridge",
+        kinetics: "Onset: 20–45 sec · Peak: 2–6m · Total: 10–20m",
+        tiers: ["1–2 sec pull", "1x 5s pull", "2x 6s pulls", "3–4x 7s pulls", "4+ deep pulls"],
+        weightNote: "Standard 1:1 carts (500 mg N,N-DMT in 0.5 mL Propylene Glycol) deliver ~4–6 mg per slow 5-second draw on a low-voltage (2.7V–3.2V) battery.",
+        safety: "Hold each draw in the lungs for 8–10 seconds so the vapor condenses cleanly. If crystals recrystallize inside the cart in cold weather, warm the glass cart in your palm or a sealed bag in warm water before use."
+      },
+      dmt_changa: {
+        title: "Changa (Regular N,N-DMT + Harmala MAOI Herb Blend)", badge: "⛔ Contains Harmala MAOIs · 30–45m Duration",
+        kinetics: "Onset: 30–90 sec · Peak: 5–15m · Total: 25–45m",
+        tiers: ["10–20 mg", "25–45 mg", "50–80 mg", "85–110 mg", "120 mg+ (Blend)"],
+        weightNote: "Changa is typically 25%–50% regular N,N-DMT infused onto herbs (mullein, lotus, mint) alongside reversible MAO-A inhibitors (harmine/harmaline from B. caapi or Syrian Rue), slowing breakdown and extending the trip to 30–45 minutes.",
+        safety: "CRITICAL MAOI WARNING: Because Changa contains active MAOIs, NEVER smoke Changa if taking SSRIs, SNRIs, MDMA, Tramadol, DXM, or amphetamines (risk of fatal serotonin syndrome)."
       },
       ayahuasca: {
         title: "Oral Ayahuasca / Pharmahuasca (MAOI + DMT)", badge: "⛔ Strict MAOI Contraindication Gate",
